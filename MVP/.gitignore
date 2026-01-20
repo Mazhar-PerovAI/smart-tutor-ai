@@ -1,0 +1,5 @@
+.vscode/
+MVP/help_requests.csv
+*.csv
+__pycache__/
+.env

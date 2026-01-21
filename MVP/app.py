@@ -163,7 +163,12 @@ Tutor insights from previous help sessions (use these to improve your explanatio
     help_message = st.text_area(
     "Describe what you need help with (topic, question, confusion)"
 )
+# Ensure student_name exists before button
+student_name = st.session_state.get("student_name", "").strip()
 
+if not student_name:
+    student_name = st.text_input("Student name", value="Student").strip()
+    st.session_state.student_name = student_name
 if st.button("Request Live Help"):
     help_request = {
     "student": student_name,

@@ -4,6 +4,27 @@ import streamlit as st
 import os
 from openai import OpenAI
 
+# =========================
+# PLATFORM CONFIG
+# =========================
+GRADE_OPTIONS = [
+    "Kindergarten",
+    "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5",
+    "Grade 6", "Grade 7", "Grade 8",
+    "Grade 9", "Grade 10", "Grade 11", "Grade 12"
+]
+
+def grade_to_number(g):
+    return 0 if g == "Kindergarten" else int(g.split()[-1])
+
+def allowed_subjects_for_grade(grade):
+    g = grade_to_number(grade)
+    if g <= 8:
+        return ["Math", "Science", "Coding"]
+    return ["Math", "Biology", "Physics", "Chemistry", "Coding"]
+
+MODE_OPTIONS = ["Learn a Topic", "Practice Problems", "Homework Help"]
+
 resolved = pd.DataFrame()
 help_message = ""
 

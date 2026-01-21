@@ -24,7 +24,35 @@ def allowed_subjects_for_grade(grade):
     return ["Math", "Biology", "Physics", "Chemistry", "Coding"]
 
 MODE_OPTIONS = ["Learn a Topic", "Practice Problems", "Homework Help"]
+def build_system_prompt(subject, grade, mode):
+    g = grade_to_number(grade)
 
+    if g <= 5:
+        tone = "Use simple words, short steps, and encouragement."
+    elif g <= 8:
+        tone = "Use clear step-by-step explanations with checks for understanding."
+    else:
+        tone = "Use structured, exam-ready explanations with reasoning."
+
+    if mode == "Homework Help":
+        policy = (
+            "Guide step-by-step. Do not jump to final answers immediately. "
+            "Ask the student to try parts before showing full solutions."
+        )
+    else:
+        policy = "Teach for understanding with examples and practice."
+
+    return f"""
+You are a safe K–12 AI learning companion.
+Subject: {subject}
+Grade: {grade}
+Mode: {mode}
+
+Rules:
+- {tone}
+- {policy}
+- End with one short check question.
+"""
 resolved = pd.DataFrame()
 help_message = ""
 

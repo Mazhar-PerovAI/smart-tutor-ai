@@ -69,21 +69,22 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY") or "")
 # -------------------------
 if page == "Tutor":
 
-    st.title("Smart Tutor AI - Math MVP")
+    st.title("Smart Learning Companion")
 
-    student_name = st.text_input("Enter your name")
-    st.write("Select your grade and topic to begin.")
+student_name = st.text_input("Student name", value=st.session_state.get("student_name","Student"))
+st.session_state.student_name = student_name
 
-    grade = st.selectbox("Select Grade", ["Grade 6", "Grade 7", "Grade 8"])
+grade = st.selectbox("Grade", GRADE_OPTIONS, index=7)
+subject = st.selectbox("Subject", allowed_subjects_for_grade(grade))
+mode = st.radio("Learning Mode", MODE_OPTIONS, horizontal=True)
 
-    topics = {
-        "Grade 6": ["Fractions", "Decimals", "Ratios", "Percentages"],
-        "Grade 7": ["Integers", "Linear Equations", "Geometry", "Proportions"],
-        "Grade 8": ["Linear Functions", "Pythagorean Theorem", "Graphs", "Systems of Equations"]
-    }
+topic = ""
+homework_text = ""
 
-    topic = st.selectbox("Select Topic", topics[grade])
-
+if mode in ["Learn a Topic", "Practice Problems"]:
+    topic = st.text_input("Topic (e.g. fractions, linear equations)").strip()
+else:
+    homework_text = st.text_area("Paste homework question").strip()
 
 # --- Safe default so Streamlit reruns never crash ---
 resolved = pd.DataFrame()

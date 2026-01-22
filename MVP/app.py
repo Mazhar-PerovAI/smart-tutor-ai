@@ -89,57 +89,30 @@ else:
 # --- Safe default so Streamlit reruns never crash ---
 resolved = pd.DataFrame()
 
-if st.button("Generate Lesson"):
+if st.button("Generate Help / Explanation"):
+    if mode != "Homework Help" and not topic:
+        st.warning("Please enter a topic.")
+    elif mode == "Homework Help" and not homework_text:
+        st.warning("Please paste the homework question.")
+    else:
+        system_prompt = build_system_prompt(subject, grade, mode)
 
-    # --- pull tutor notes from past resolved help requests ---
-    tutor_insights = ""
-    resolved = pd.DataFrame()
+        user_prompt = (
+            homework_text if mode == "Homework Help"
+            else f"Topic: {topic}"
+        )
 
-    try:
-        req_df = pd.read_csv("help_requests.csv")  # ✅ make sure this filename matches your app
-        if "tutor_notes" in req_df.columns:
-            resolved = req_df[
-                (req_df["topic"] == topic) &
-                (req_df["status"] == "Resolved") &
-                (req_df["tutor_notes"].notna())
+        lesson = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt}
             ]
+        )
 
-            if not resolved.empty:
-                tutor_insights = "\n".join(resolved["tutor_notes"].tail(3).tolist())
-    except:
-        pass
-
-    # --- show Tutor Tip to student (ONLY ONCE) ---
-    if not resolved.empty:
-        tutor_tip = str(resolved["tutor_notes"].tail(1).values[0]).strip()
-        if tutor_tip:
-            st.info(f"💡 Tutor Tip: {tutor_tip}")
-
-    # --- build lesson prompt (feeds tutor insights back into AI) ---
-    lesson_prompt = f"""
-Teach {topic} to a {grade} student.
-
-Requirements:
-- Explain clearly step-by-step
-- Give 1 worked example
-- Give 3 short practice questions
-- Then create a short quiz (5 MCQs)
-
-Tutor insights from previous help sessions (use these to improve your explanation):
-{tutor_insights}
-"""
-
-    lesson = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[{"role": "user", "content": lesson_prompt}]
-    )
-
-    lesson_text = lesson.choices[0].message.content
-    st.session_state.lesson_text = lesson_text
-    st.markdown(lesson_text)
-
-    # Optional: if your app treats "quiz_text" as same content, store it too
-    st.session_state.quiz_text = lesson_text
+        lesson_text = lesson.choices[0].message.content
+        st.session_state.lesson_text = lesson_text
+        st.markdown(lesson_text)
 
     if "lesson_text" in st.session_state:
 
@@ -223,14 +196,15 @@ if st.button("Request Live Help"):
     help_request = {
     "student": student_name,
     "grade": grade,
+    "subject": subject,
+    "mode": mode,
     "topic": topic,
+    "homework_text": homework_text,
     "message": help_message,
     "time": datetime.now().strftime("%Y-%m-%d %H:%M"),
     "status": "Open",
-
-    # 👇 add these
-    "lesson_text": st.session_state.get("lesson_text", ""),
-    "quiz_text": st.session_state.get("quiz_text", "")
+    "lesson_text": st.session_state.get("lesson_text",""),
+    "quiz_text": st.session_state.get("quiz_text","")
 }
 
     try:
@@ -307,10 +281,17 @@ elif page == "Tutor Dashboard":
             selected = requests_df.loc[selected_index]
 
             st.markdown("### Student Request Details")
-            st.write(f"**Student:** {selected['student']}")
-            st.write(f"**Topic:** {selected['topic']}")
-            st.write(f"**Time:** {selected['time']}")
-            st.write(f"**Message:** {selected['message']}")
+
+            st.write(f"**Student:** {selected.get('student','')}")
+            st.write(f"**Grade:** {selected.get('grade','')}")
+            st.write(f"**Subject:** {selected.get('subject','')}")
+            st.write(f"**Mode:** {selected.get('mode','')}")
+
+        if selected.get("topic"):
+            st.write(f"**Topic:** {selected.get('topic','')}")
+
+            st.write(f"**Time:** {selected.get('time','')}")
+            st.write(f"**Message:** {selected.get('message','')}")
 
             st.markdown("### Lesson Student Saw")
             st.markdown(selected.get("lesson_text", "No lesson context available"))

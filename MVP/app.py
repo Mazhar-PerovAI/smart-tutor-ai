@@ -196,10 +196,15 @@ if st.button("Generate Help / Explanation"):
     else:
         system_prompt = build_system_prompt(subject, grade, mode)
 
-        user_prompt = (
-            homework_text if mode == "Homework Help"
-            else f"Topic: {topic}"
-        )
+        if mode == "Homework Help":
+          user_prompt = f"""Homework question/problem:
+        {homework_text}
+
+    Please follow the required format and show every step."""
+        else:
+          user_prompt = f"""Topic: {topic}
+
+    Please follow the required format."""
 
         lesson = client.chat.completions.create(
             model="gpt-4o-mini",

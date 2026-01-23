@@ -176,7 +176,13 @@ st.session_state.student_name = student_name
 grade = st.selectbox("Grade", GRADE_OPTIONS, index=7)
 subject = st.selectbox("Subject", allowed_subjects_for_grade(grade))
 mode = st.radio("Learning Mode", MODE_OPTIONS, horizontal=True)
-
+# ---- Mode description (UI only) ----
+if mode == "Homework Help":
+    st.caption("Step-by-step guidance. No steps skipped. Designed for homework support.")
+elif mode == "Practice Problems":
+    st.caption("Practice questions with fully worked solutions, from easy to harder.")
+else:
+    st.caption("Learn the concept first, then see examples and try practice questions.")
 topic = ""
 homework_text = ""
 

@@ -4,6 +4,8 @@ import streamlit as st
 import os
 from openai import OpenAI
 
+import base64
+import json
 # =========================
 # PLATFORM CONFIG
 # =========================

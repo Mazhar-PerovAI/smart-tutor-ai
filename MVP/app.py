@@ -26,6 +26,83 @@ def allowed_subjects_for_grade(grade):
     return ["Math", "Biology", "Physics", "Chemistry", "Coding"]
 
 MODE_OPTIONS = ["Learn a Topic", "Practice Problems", "Homework Help"]
+def analyze_homework_photo(image_bytes: bytes) -> dict:
+    """
+    Uses a vision-capable model to:
+    - check readability
+    - detect multiple questions / worksheet / exam-style page
+    - extract ONE question text (best effort)
+
+    Returns dict:
+      {
+        "ok": bool,
+        "reason": "blurry|multiple|worksheet|invalid|not_math|ok",
+        "question_text": str
+      }
+    """
+    # Convert to base64 data URL
+    b64 = base64.b64encode(image_bytes).decode("utf-8")
+    data_url = f"data:image/jpeg;base64,{b64}"
+
+    # Ask for STRICT JSON only
+    prompt = """
+You are a strict homework-photo validator for a K–12 learning app.
+
+MVP RULES:
+- Allow ONLY one handwritten math question.
+- Reject if: blurry/unreadable, multiple questions, worksheet/test/exam page, not a math question, or no question found.
+- If allowed, extract the SINGLE question text clearly.
+
+Return ONLY valid JSON in this exact schema:
+{
+  "readable": true/false,
+  "multiple_questions": true/false,
+  "worksheet_or_exam": true/false,
+  "looks_like_math": true/false,
+  "question_text": "..."
+}
+No extra keys. No markdown. No commentary.
+""".strip()
+
+    try:
+        resp = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {
+                    "role": "user",
+                    "content": [
+                        {"type": "input_text", "text": prompt},
+                        {"type": "input_image", "image_url": data_url},
+                    ],
+                }
+            ],
+            temperature=0
+        )
+        raw = resp.choices[0].message.content.strip()
+        data = json.loads(raw)
+    except Exception:
+        # If anything fails, treat as invalid
+        return {"ok": False, "reason": "invalid", "question_text": ""}
+
+    readable = bool(data.get("readable"))
+    multiple = bool(data.get("multiple_questions"))
+    worksheet = bool(data.get("worksheet_or_exam"))
+    looks_math = bool(data.get("looks_like_math"))
+    qtext = (data.get("question_text") or "").strip()
+
+    # Apply MVP rejection rules
+    if not readable:
+        return {"ok": False, "reason": "blurry", "question_text": ""}
+    if worksheet:
+        return {"ok": False, "reason": "worksheet", "question_text": ""}
+    if multiple:
+        return {"ok": False, "reason": "multiple", "question_text": ""}
+    if not looks_math:
+        return {"ok": False, "reason": "not_math", "question_text": ""}
+    if not qtext:
+        return {"ok": False, "reason": "invalid", "question_text": ""}
+
+    return {"ok": True, "reason": "ok", "question_text": qtext}
 def build_system_prompt(subject: str, grade_label: str, mode: str) -> str:
     g = grade_to_number(grade_label)
 
@@ -189,9 +266,26 @@ topic = ""
 homework_text = ""
 
 if mode in ["Learn a Topic", "Practice Problems"]:
-    topic = st.text_input("Topic (e.g. fractions, linear equations)").strip()
+     topic = st.text_input("Topic (e.g. fractions, linear equations)")
 else:
-    homework_text = st.text_area("Paste homework question").strip()
+     st.info(
+         "Upload one homework question only.\n"
+         "Smart AI will explain the concept first and then solve it step-by-step to help you learn — not just give answers."
+     )
+     st.caption(
+         "Works best with clear handwritten questions. Exams, worksheets, or multiple questions are not supported."
+     )
+
+     homework_photo = st.file_uploader(
+         "Upload a photo of ONE handwritten math question (optional)",
+         type=["png", "jpg", "jpeg"]
+     )
+
+     homework_text = st.text_area(
+         "Or paste the homework question here",
+         placeholder="Example: Solve 2x + 5 = 17"
+     )
+
 
 # --- Safe default so Streamlit reruns never crash ---
 resolved = pd.DataFrame()
@@ -199,10 +293,41 @@ resolved = pd.DataFrame()
 if st.button("Generate Help / Explanation"):
     if mode != "Homework Help" and not topic:
         st.warning("Please enter a topic.")
-    elif mode == "Homework Help" and not homework_text:
-        st.warning("Please paste the homework question.")
+    elif mode == "Homework Help" and not homework_text and homework_photo is None:
+      st.warning("Please upload a photo or paste the homework question.")
     else:
         system_prompt = build_system_prompt(subject, grade, mode)
+        if mode == "Homework Help" and homework_photo is not None:
+            result = analyze_homework_photo(homework_photo.getvalue())
+
+            if not result["ok"]:
+                if result["reason"] == "blurry":
+                    st.warning(
+                        "I couldn’t read this question clearly. "
+                        "Please take a clearer photo with good lighting."
+                    )
+                elif result["reason"] == "multiple":
+                    st.warning(
+                        "I see more than one question. "
+                        "Please upload one question at a time."
+                    )
+                elif result["reason"] == "worksheet":
+                    st.warning(
+                        "This looks like a worksheet or test page. "
+                        "Please upload one specific question only."
+                    )
+                elif result["reason"] == "not_math":
+                    st.warning(
+                        "This doesn’t look like a math homework question."
+                    )
+                else:
+                    st.warning(
+                        "I couldn’t find a clear question in this photo."
+                    )
+                st.stop()
+
+            # ✅ overwrite homework_text with extracted question
+            homework_text = result["question_text"]
 
         if mode == "Homework Help":
           user_prompt = f"""Homework question/problem:

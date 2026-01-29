@@ -6,6 +6,14 @@ from openai import OpenAI
 
 import base64
 import json
+
+st.set_page_config(
+    page_title="SLP | Smart Learning Platform",
+    layout="wide"
+)
+st.markdown("### SLP — Smart Learning Platform")
+st.caption("Step‑by‑step learning for every grade")
+st.divider()
 # =========================
 # PLATFORM CONFIG
 # =========================
@@ -24,6 +32,93 @@ def allowed_subjects_for_grade(grade):
     if g <= 8:
         return ["Math", "Science", "Coding"]
     return ["Math", "Biology", "Physics", "Chemistry", "Coding"]
+
+st.divider()
+st.subheader("Choose Your Grade")
+
+col1, col2, col3 = st.columns(3)
+with col1:
+    if st.button("Grade 1"):
+        st.session_state["grade"] = 1
+with col2:
+    if st.button("Grade 2"):
+        st.session_state["grade"] = 2
+with col3:
+    if st.button("Grade 3"):
+        st.session_state["grade"] = 3
+
+col4, col5 = st.columns(2)
+with col4:
+    if st.button("Grade 4"):
+        st.session_state["grade"] = 4
+with col5:
+    if st.button("Grade 5"):
+        st.session_state["grade"] = 5
+
+        if "grade" in st.session_state:
+         grade = st.session_state["grade"]
+
+    st.divider()
+    st.header(f"Grade {grade} – Math")
+    st.caption("Learn step by step. Practice with confidence.")
+
+    colA, colB, colC = st.columns(3)
+
+    with colA:
+        if st.button("📘 Today’s Lesson"):
+            st.session_state["mode"] = "lesson"
+
+    with colB:
+        if st.button("✏️ Practice"):
+            st.session_state["mode"] = "practice"
+
+    with colC:
+        if st.button("🏠 Homework Help"):
+            st.session_state["mode"] = "homework"
+# ==========================
+# (4) Today's Lesson
+# ==========================
+if st.session_state.get("mode") == "lesson":
+    st.subheader("Today’s Lesson")
+    st.info("Topic: Fractions – Parts of a Whole")
+
+    # Cached syllabus content (NO AI)
+    st.write("""
+    A fraction shows a part of a whole.
+
+    If a pizza is cut into 4 equal parts,
+    each part is one‑fourth (1/4).
+    """)
+    if st.session_state.get("mode") == "practice":
+        st.subheader("Practice")
+
+    st.write("What is 1/4 of 8?")
+    answer = st.text_input("Your answer")
+
+    if st.button("Check"):
+        if answer == "2":
+            st.success("Correct! ⭐")
+        else:
+            st.warning("Try again.")
+
+    if st.button("Explain"):
+        st.info("Explanation will be shown here (AI only when needed).")
+
+        if st.session_state.get("mode") == "homework":
+         st.subheader("Homework Help")
+
+    st.caption(
+        "SLP explains homework step by step to help learning. "
+        "It does not give shortcuts or exam answers."
+    )
+
+    homework_photo = st.file_uploader(
+        "📷 Upload a photo", type=["png", "jpg", "jpeg"]
+    )
+    homework_text = st.text_area("✍️ Or type the question")
+
+    if st.button("Get Help"):
+        st.info("Homework explanation will be generated here.")
 
 MODE_OPTIONS = ["Learn a Topic", "Practice Problems", "Homework Help"]
 def analyze_homework_photo(image_bytes: bytes) -> dict:

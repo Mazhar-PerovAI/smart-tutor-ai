@@ -32,7 +32,11 @@ def allowed_subjects_for_grade(grade):
     if g <= 8:
         return ["Math", "Science", "Coding"]
     return ["Math", "Biology", "Physics", "Chemistry", "Coding"]
-
+# ==========================
+# SESSION STATE DEFAULTS (STEP 7)
+# ==========================
+if "mode" not in st.session_state:
+    st.session_state["mode"] = None
 st.divider()
 st.subheader("Choose Your Grade")
 

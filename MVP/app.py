@@ -357,14 +357,7 @@ st.session_state.student_name = student_name
 
 grade = st.selectbox("Grade", GRADE_OPTIONS, index=7)
 subject = st.selectbox("Subject", allowed_subjects_for_grade(grade))
-mode = st.radio("Learning Mode", MODE_OPTIONS, horizontal=True)
-# ---- Mode description (UI only) ----
-if mode == "Homework Help":
-    st.caption("Step-by-step guidance. No steps skipped. Designed for homework support.")
-elif mode == "Practice Problems":
-    st.caption("Practice questions with fully worked solutions, from easy to harder.")
-else:
-    st.caption("Learn the concept first, then see examples and try practice questions.")
+
 topic = ""
 homework_text = ""
 mode = st.session_state.get("mode")
@@ -399,7 +392,7 @@ else:
 resolved = pd.DataFrame()
 
 if st.button("Generate Help / Explanation"):
-    if mode != "Homework Help" and not topic:
+    if mode != "homework" and not topic:
         st.warning("Please enter a topic.")
     elif mode == "Homework Help" and not homework_text and homework_photo is None:
       st.warning("Please upload a photo or paste the homework question.")

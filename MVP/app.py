@@ -367,8 +367,13 @@ else:
     st.caption("Learn the concept first, then see examples and try practice questions.")
 topic = ""
 homework_text = ""
-
-if mode in ["Learn a Topic", "Practice Problems"]:
+mode = st.session_state.get("mode")
+# ---- SAFEGUARD (THIS WAS MISSING) ----
+if mode is None:
+    st.info("Select a grade, then choose: Today’s Lesson / Practice / Homework Help.")
+    st.stop()
+# ---- MODE-BASED UI ---
+if mode in ["lesson", "practice"]:
      topic = st.text_input("Topic (e.g. fractions, linear equations)")
 else:
      st.info(

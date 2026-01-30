@@ -37,6 +37,10 @@ def allowed_subjects_for_grade(grade):
 # ==========================
 if "mode" not in st.session_state:
     st.session_state["mode"] = None
+    
+if "grade" not in st.session_state:
+    st.session_state["grade"] = None
+
 st.divider()
 st.subheader("Choose Your Grade")
 

@@ -41,46 +41,81 @@ if "mode" not in st.session_state:
 if "grade" not in st.session_state:
     st.session_state["grade"] = None
 
-st.divider()
+# ================================
+# GRADE SELECTION (KG – GRADE 5)
+# ================================
+
+if "grade" not in st.session_state:
+    st.session_state["grade"] = None
+
+if "grade_color" not in st.session_state:
+    st.session_state["grade_color"] = None
+
+
+# Grade labels
+grade_labels = [
+    "Kindergarten",
+    "Grade 1", "Grade 2", "Grade 3",
+    "Grade 4", "Grade 5"
+]
+
+# Grade → color mapping
+GRADE_COLORS = {
+    0: "#F4D03F",  # Kindergarten - Yellow
+    1: "#3498DB",  # Grade 1 - Blue
+    2: "#2ECC71",  # Grade 2 - Green
+    3: "#9B59B6",  # Grade 3 - Purple
+    4: "#E67E22",  # Grade 4 - Orange
+    5: "#E74C3C",  # Grade 5 - Red
+}
+
 st.subheader("Choose Your Grade")
 
-col1, col2, col3 = st.columns(3)
-with col1:
-    if st.button("Grade 1"):
-        st.session_state["grade"] = 1
-with col2:
-    if st.button("Grade 2"):
-        st.session_state["grade"] = 2
-with col3:
-    if st.button("Grade 3"):
-        st.session_state["grade"] = 3
+selected_grade = st.radio(
+    "Select one:",
+    grade_labels,
+    index=None,
+    horizontal=True
+)
 
-col4, col5 = st.columns(2)
-with col4:
-    if st.button("Grade 4"):
-        st.session_state["grade"] = 4
-with col5:
-    if st.button("Grade 5"):
-        st.session_state["grade"] = 5
+# Stop app until grade is selected
+if selected_grade is None:
+    st.info("Please select a grade to continue.")
+    st.stop()
 
-        if "grade" in st.session_state:
-         grade = st.session_state["grade"]
+# Normalize grade
+if selected_grade == "Kindergarten":
+    grade = 0
+else:
+    grade = int(selected_grade.split()[-1])
 
-    st.divider()
-    st.header(f"Grade {grade} – Math")
-    st.caption("Learn step by step. Practice with confidence.")
+st.session_state["grade"] = grade
+st.session_state["grade_color"] = GRADE_COLORS[grade]
 
-    colA, colB, colC = st.columns(3)
+st.divider()
 
-    with colA:
+# Colored header
+st.markdown(
+    f"""
+    <h2 style="color:{st.session_state['grade_color']};">
+        {"Kindergarten 🧸" if grade == 0 else f"Grade {grade} 🧮"} Learning
+    </h2>
+    """,
+    unsafe_allow_html=True
+)
+st.caption("Learn step by step. Practice with confidence.")
+
+colA, colB, colC = st.columns(3)
+
+with colA:
         if st.button("📘 Today’s Lesson"):
             st.session_state["mode"] = "lesson"
 
-    with colB:
+with colB:
         if st.button("✏️ Practice"):
             st.session_state["mode"] = "practice"
 
-    with colC:
+with colC:
         if st.button("🏠 Homework Help"):
             st.session_state["mode"] = "homework"
 # ==========================

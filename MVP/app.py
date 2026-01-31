@@ -392,43 +392,28 @@ else:
 resolved = pd.DataFrame()
 
 if st.button("Generate Help / Explanation"):
-    if mode != "homework" and not topic:
-        st.warning("Please enter a topic.")
-    elif mode == "Homework Help" and not homework_text and homework_photo is None:
-      st.warning("Please upload a photo or paste the homework question.")
-    else:
-        system_prompt = build_system_prompt(subject, grade, mode)
-        if mode == "Homework Help" and homework_photo is not None:
-            result = analyze_homework_photo(homework_photo.getvalue())
 
-            if not result["ok"]:
-                if result["reason"] == "blurry":
-                    st.warning(
-                        "I couldn’t read this question clearly. "
-                        "Please take a clearer photo with good lighting."
-                    )
-                elif result["reason"] == "multiple":
-                    st.warning(
-                        "I see more than one question. "
-                        "Please upload one question at a time."
-                    )
-                elif result["reason"] == "worksheet":
-                    st.warning(
-                        "This looks like a worksheet or test page. "
-                        "Please upload one specific question only."
-                    )
-                elif result["reason"] == "not_math":
-                    st.warning(
-                        "This doesn’t look like a math homework question."
-                    )
-                else:
-                    st.warning(
-                        "I couldn’t find a clear question in this photo."
-                    )
-                st.stop()
+    if mode in ["lesson", "practice"] and not topic:
+        st.warning("Please enter a topic.")
+        st.stop()
+
+    if mode == "homework" and not homework_text and homework_photo is None:
+        st.warning("Please upload a photo or paste the homework question.")
+        st.stop()
+
+    system_prompt = build_system_prompt(subject, grade, mode)
+
+    if mode == "homework" and homework_photo is not None:
+        result = analyze_homework_photo(homework_photo.getvalue())
+
+        if not result["ok"]:
+            st.warning("I couldn’t read the question clearly. Please upload a clearer photo.")
+            st.stop()
+
+        homework_text = result["question_text"]
 
             # ✅ overwrite homework_text with extracted question
-            homework_text = result["question_text"]
+        homework_text = result["question_text"]
 
         if mode == "Homework Help":
           user_prompt = f"""Homework question/problem:

@@ -91,6 +91,53 @@ else:
 
 st.session_state["grade"] = grade
 st.session_state["grade_color"] = GRADE_COLORS[grade]
+# ================================
+# KINDERGARTEN MODULE – ANIMALS
+# ================================
+
+if grade == 0:
+    st.subheader("🧸 Let’s Play with Animals!")
+
+    st.markdown(
+        "<h4>Tap an animal 👆</h4>",
+        unsafe_allow_html=True
+    )
+
+    # Simple animal set (emoji now, images later)
+    animals = {
+        "🐘 Elephant": "Elephant",
+        "🐶 Dog": "Dog",
+        "🐱 Cat": "Cat",
+        "🐦 Bird": "Bird",
+    }
+
+    # Appreciation phrases (rotate later if needed)
+    appreciation = [
+        "Good job! ⭐",
+        "Well done! 🎉",
+        "Great! 😊",
+        "Nice work! 👏",
+        "Excellent! 🌟"
+    ]
+
+    cols = st.columns(2)
+
+    for idx, (emoji, name) in enumerate(animals.items()):
+        with cols[idx % 2]:
+            if st.button(emoji, use_container_width=True):
+                # Object name (acts like voice placeholder)
+                st.markdown(
+                    f"<h2 style='color:{st.session_state['grade_color']};'>{name}</h2>",
+                    unsafe_allow_html=True
+                )
+
+                # Appreciation (random selection later, fixed for now)
+                st.success("Good job! 🎉")
+
+                # Celebration
+                st.balloons()
+
+    st.info("Keep tapping and having fun! 😊")
 
 st.divider()
 

@@ -94,49 +94,26 @@ st.session_state["grade_color"] = GRADE_COLORS[grade]
 # ================================
 # KINDERGARTEN MODULE – ANIMALS (BIG TILES)
 # ================================
-
 if grade == 0:
-    # Make buttons BIG (only affects buttons on the page)
-    st.markdown(
-        """
-        <style>
-        .stButton > button {
-            font-size: 28px !important;
-            padding: 18px 12px !important;
-            height: 90px !important;
-            border-radius: 14px !important;
-            border: 2px solid rgba(0,0,0,0.08) !important;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
     st.subheader("🧸 Let’s Play with Animals!")
     st.write("### Tap an animal 👆")
 
-    # Big + clear labels (emoji + name)
     animals = [
-        ("🐘", "Elephant"),
-        ("🐶", "Dog"),
-        ("🐱", "Cat"),
-        ("🐦", "Bird"),
+        ("Elephant", "assets/animals/elephant.png"),
+        ("Dog", "assets/animals/dog.png"),
+        ("Cat", "assets/animals/cat.png"),
+        ("Bird", "assets/animals/bird.png"),
     ]
 
-    # Praise (KG appreciation)
-    praise = ["Good job! ⭐", "Well done! 🎉", "Great! 😊", "Nice work! 👏", "Excellent! 🌟"]
+    praise = ["Good job! ⭐", "Well done! 🎉", "Great! 😊", "Excellent! 🌟"]
 
     cols = st.columns(2, gap="large")
 
-    for i, (emoji, name) in enumerate(animals):
+    for i, (name, img_path) in enumerate(animals):
         with cols[i % 2]:
-            # Big readable button label
-            if st.button(f"{emoji}  {name}", key=f"kg_animal_{name}", use_container_width=True):
-                st.markdown(
-                    f"<h2 style='color:{st.session_state['grade_color']}; margin-bottom:0;'>{emoji} {name}</h2>",
-                    unsafe_allow_html=True
-                )
-                st.success(praise[i % len(praise)])   # simple rotation
+            st.image(img_path, use_container_width=True)
+            if st.button(name, key=f"kg_{name}", use_container_width=True):
+                st.success(praise[i % len(praise)])
                 st.balloons()
 
     st.info("Keep tapping and having fun! 😊")

@@ -92,7 +92,7 @@ else:
 st.session_state["grade"] = grade
 st.session_state["grade_color"] = GRADE_COLORS[grade]
 # ================================
-# KINDERGARTEN MODULE – ANIMALS (BIG TILES)
+# KINDERGARTEN MODULE – ANIMALS 
 # ================================
 if grade == 0:
     st.subheader("🧸 Let’s Play with Animals!")

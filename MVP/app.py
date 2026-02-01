@@ -92,49 +92,51 @@ else:
 st.session_state["grade"] = grade
 st.session_state["grade_color"] = GRADE_COLORS[grade]
 # ================================
-# KINDERGARTEN MODULE – ANIMALS
+# KINDERGARTEN MODULE – ANIMALS (BIG TILES)
 # ================================
 
 if grade == 0:
-    st.subheader("🧸 Let’s Play with Animals!")
-
+    # Make buttons BIG (only affects buttons on the page)
     st.markdown(
-        "<h4>Tap an animal 👆</h4>",
+        """
+        <style>
+        .stButton > button {
+            font-size: 28px !important;
+            padding: 18px 12px !important;
+            height: 90px !important;
+            border-radius: 14px !important;
+            border: 2px solid rgba(0,0,0,0.08) !important;
+        }
+        </style>
+        """,
         unsafe_allow_html=True
     )
 
-    # Simple animal set (emoji now, images later)
-    animals = {
-        "🐘 Elephant": "Elephant",
-        "🐶 Dog": "Dog",
-        "🐱 Cat": "Cat",
-        "🐦 Bird": "Bird",
-    }
+    st.subheader("🧸 Let’s Play with Animals!")
+    st.write("### Tap an animal 👆")
 
-    # Appreciation phrases (rotate later if needed)
-    appreciation = [
-        "Good job! ⭐",
-        "Well done! 🎉",
-        "Great! 😊",
-        "Nice work! 👏",
-        "Excellent! 🌟"
+    # Big + clear labels (emoji + name)
+    animals = [
+        ("🐘", "Elephant"),
+        ("🐶", "Dog"),
+        ("🐱", "Cat"),
+        ("🐦", "Bird"),
     ]
 
-    cols = st.columns(2)
+    # Praise (KG appreciation)
+    praise = ["Good job! ⭐", "Well done! 🎉", "Great! 😊", "Nice work! 👏", "Excellent! 🌟"]
 
-    for idx, (emoji, name) in enumerate(animals.items()):
-        with cols[idx % 2]:
-            if st.button(emoji, use_container_width=True):
-                # Object name (acts like voice placeholder)
+    cols = st.columns(2, gap="large")
+
+    for i, (emoji, name) in enumerate(animals):
+        with cols[i % 2]:
+            # Big readable button label
+            if st.button(f"{emoji}  {name}", key=f"kg_animal_{name}", use_container_width=True):
                 st.markdown(
-                    f"<h2 style='color:{st.session_state['grade_color']};'>{name}</h2>",
+                    f"<h2 style='color:{st.session_state['grade_color']}; margin-bottom:0;'>{emoji} {name}</h2>",
                     unsafe_allow_html=True
                 )
-
-                # Appreciation (random selection later, fixed for now)
-                st.success("Good job! 🎉")
-
-                # Celebration
+                st.success(praise[i % len(praise)])   # simple rotation
                 st.balloons()
 
     st.info("Keep tapping and having fun! 😊")

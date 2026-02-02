@@ -2,11 +2,16 @@ import pandas as pd
 from datetime import datetime
 import streamlit as st
 import os
+import random
 from openai import OpenAI
 
 import base64
 import json
-
+def play_audio_if_exists(path: str):
+    if os.path.exists(path):
+        st.audio(path, format="audio/mp3")
+        return True
+    return False
 st.set_page_config(
     page_title="SLP | Smart Learning Platform",
     layout="wide"
@@ -23,6 +28,18 @@ GRADE_OPTIONS = [
     "Grade 6", "Grade 7", "Grade 8",
     "Grade 9", "Grade 10", "Grade 11", "Grade 12"
 ]
+ALPHABET_ANIMALS = {
+    "A": [("Alligator", "assets/alphabet_animals/A_alligator.png"),
+          ("Ant",       "assets/alphabet_animals/A_ant.png")],
+    "B": [("Bear",      "assets/alphabet_animals/B_bear.png"),
+          ("Bird",      "assets/alphabet_animals/B_bird.png")],
+    "C": [("Cat",       "assets/alphabet_animals/C_cat.png"),
+          ("Cow",       "assets/alphabet_animals/C_cow.png")],
+}
+NUM_WORDS = {
+    1:"one", 2:"two", 3:"three", 4:"four", 5:"five",
+    6:"six", 7:"seven", 8:"eight", 9:"nine", 10:"ten"
+}
 
 def grade_to_number(g):
     return 0 if g == "Kindergarten" else int(g.split()[-1])
@@ -184,6 +201,48 @@ st.info("Keep tapping and having fun! 😊")
 st.write("")
 st.write("")
 # ✅ CLOSE KG ANIMALS SECTION HERE
+st.markdown("</div>", unsafe_allow_html=True)
+st.markdown('<div class="kg-section">', unsafe_allow_html=True)
+
+st.subheader("🔢 Numbers 1 to 10")
+st.write("### Tap a number 👆")
+
+# Make number buttons big
+st.markdown(
+    """
+    <style>
+    .stButton > button {
+        font-size: 44px !important;
+        padding: 30px 20px !important;
+        height: 140px !important;
+        border-radius: 20px !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+praise = ["Good job! ⭐", "Excellent! 🌟", "Keep it up! 👍", "Well done! 🎉"]
+
+cols = st.columns(5, gap="large")
+
+for n in range(1, 11):
+    with cols[(n-1) % 5]:
+        if st.button(str(n), key=f"kg_num_{n}", use_container_width=True):
+            word = NUM_WORDS[n]
+
+            audio_path = f"assets/audio/numbers/{n}.mp3"
+            played = play_audio_if_exists(audio_path)
+
+            st.markdown(f"### **{n} — {word}**")
+            st.success(random.choice(praise))
+            st.balloons()
+
+            if not played:
+                st.caption("🔇 Audio file missing (you can add it later).")
+
+st.write("")
+st.write("")
 st.markdown("</div>", unsafe_allow_html=True)
 
 # Colored header

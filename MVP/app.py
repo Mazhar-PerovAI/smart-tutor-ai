@@ -95,17 +95,61 @@ st.session_state["grade_color"] = GRADE_COLORS[grade]
 # KINDERGARTEN MODULE – ANIMALS 
 # ================================
 if grade == 0:
-    st.subheader("🧸 Let’s Play with Animals!")
-    st.write("### Tap an animal 👆")
+    # ================================
+# KG UI GLOBAL STYLES
+# ================================
+  st.markdown(
+    """
+    <style>
+    /* General spacing */
+    .block-container {
+        padding-top: 2rem;
+        padding-bottom: 3rem;
+    }
 
-    animals = [
+    /* Section spacing */
+    .kg-section {
+        margin-top: 2.5rem;
+        margin-bottom: 2.5rem;
+    }
+
+    /* Headings */
+    h2, h3 {
+        margin-bottom: 1.2rem !important;
+    }
+
+    /* Images */
+    img {
+        border-radius: 18px;
+    }
+
+    /* Buttons (already big, just cleaner) */
+    .stButton > button {
+        margin-top: 0.6rem;
+        margin-bottom: 1.2rem;
+    }
+
+    /* Info / success boxes */
+    .stAlert {
+        margin-top: 1.5rem;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+    
+st.markdown('<div class="kg-section">', unsafe_allow_html=True)
+st.subheader("🧸 Let’s Play with Animals!")
+st.write("Tap an animal 👆")
+
+animals = [
         ("Elephant", "assets/animals/elephant.png"),
         ("Dog", "assets/animals/dog.png"),
         ("Cat", "assets/animals/cat.png"),
         ("Bird", "assets/animals/bird.png"),
     ]
 
-    praise = [
+praise = [
     "Good job! ⭐",
     "Well done! 🎉",
     "Great! 😊",
@@ -114,9 +158,9 @@ if grade == 0:
     "Nice try! 😊 Try again!"
 ]
 
-    cols = st.columns(2, gap="large")
+cols = st.columns(2, gap="large")
 
-    for i, (name, img_path) in enumerate(animals):
+for i, (name, img_path) in enumerate(animals):
         with cols[i % 2]:
             st.image(img_path, use_container_width=True)
             if st.button(name, key=f"kg_{name}", use_container_width=True):
@@ -130,14 +174,17 @@ if grade == 0:
     "assets/audio/keep_it_up.mp3",
     "assets/audio/try_again.mp3",
 ]
-    st.audio(audio_files[i % len(audio_files)], format="audio/mp3")
+st.audio(audio_files[i % len(audio_files)], format="audio/mp3")
 
-    st.success(praise[i % len(praise)])
-    st.balloons()
+st.success(praise[i % len(praise)])
+st.balloons()
 
-    st.info("Keep tapping and having fun! 😊")
-
-st.divider()
+st.info("Keep tapping and having fun! 😊")
+# soft spacing (STEP 4)
+st.write("")
+st.write("")
+# ✅ CLOSE KG ANIMALS SECTION HERE
+st.markdown("</div>", unsafe_allow_html=True)
 
 # Colored header
 st.markdown(

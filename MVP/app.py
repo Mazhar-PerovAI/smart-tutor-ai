@@ -174,16 +174,8 @@ praise = [
     "Keep it up! 👍",
     "Nice try! 😊 Try again!"
 ]
-
-cols = st.columns(2, gap="large")
-
-for i, (name, img_path) in enumerate(animals):
-        with cols[i % 2]:
-            st.image(img_path, use_container_width=True)
-            if st.button(name, key=f"kg_{name}", use_container_width=True):
-
-    # 🔊 Appreciation sound (KG voice)
-             audio_files = [
+ # 🔊 Appreciation sound (KG voice)
+audio_files = [
     "assets/audio/good_job.mp3",
     "assets/audio/well_done.mp3",
     "assets/audio/great.mp3",
@@ -191,10 +183,16 @@ for i, (name, img_path) in enumerate(animals):
     "assets/audio/keep_it_up.mp3",
     "assets/audio/try_again.mp3",
 ]
-st.audio(audio_files[i % len(audio_files)], format="audio/mp3")
 
-st.success(praise[i % len(praise)])
-st.balloons()
+cols = st.columns(2, gap="large")
+
+for i, (name, img_path) in enumerate(animals):
+        with cols[i % 2]:
+            st.image(img_path, use_container_width=True)
+            if st.button(name, key=f"kg_{name}", use_container_width=True):
+               play_audio_if_exists(audio_files[i % len(audio_files)])
+               st.success(praise[i % len(praise)])
+               st.balloons()
 
 st.info("Keep tapping and having fun! 😊")
 # soft spacing (STEP 4)

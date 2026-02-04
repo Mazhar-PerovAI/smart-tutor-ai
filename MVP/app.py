@@ -67,7 +67,11 @@ if "grade" not in st.session_state:
 
 if "grade_color" not in st.session_state:
     st.session_state["grade_color"] = None
+if "kg_mode" not in st.session_state:
+    st.session_state["kg_mode"] = "Animals"
 
+if "kg_letter" not in st.session_state:
+    st.session_state["kg_letter"] = "A"
 
 # Grade labels
 grade_labels = [
@@ -154,7 +158,37 @@ if grade == 0:
     """,
     unsafe_allow_html=True
 )
-    
+    # ================================
+# KG HOME MENU
+# ================================
+st.markdown('<div class="kg-section">', unsafe_allow_html=True)
+
+st.subheader("🎒 Choose an Activity")
+
+menu_cols = st.columns(5, gap="large")
+
+with menu_cols[0]:
+    if st.button("🧸 Animals", use_container_width=True):
+        st.session_state["kg_mode"] = "Animals"
+
+with menu_cols[1]:
+    if st.button("🔢 Numbers", use_container_width=True):
+        st.session_state["kg_mode"] = "Numbers"
+
+with menu_cols[2]:
+    if st.button("🔤 Alphabet", use_container_width=True):
+        st.session_state["kg_mode"] = "Alphabet"
+
+with menu_cols[3]:
+    if st.button("✍️ Draw", use_container_width=True):
+        st.session_state["kg_mode"] = "Draw"
+
+with menu_cols[4]:
+    if st.button("🎬 Videos", use_container_width=True):
+        st.session_state["kg_mode"] = "Videos"
+
+st.write("")
+st.markdown("</div>", unsafe_allow_html=True)
 st.markdown('<div class="kg-section">', unsafe_allow_html=True)
 st.subheader("🧸 Let’s Play with Animals!")
 st.write("Tap an animal 👆")

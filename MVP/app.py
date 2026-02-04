@@ -270,6 +270,46 @@ if st.session_state["kg_mode"] == "Alphabet":
                     st.balloons()
 
     st.markdown("</div>", unsafe_allow_html=True)
+    # ================================
+# KG DRAWING BOARD
+# ================================
+if st.session_state["kg_mode"] == "Draw":
+    st.markdown('<div class="kg-section">', unsafe_allow_html=True)
+    st.subheader("✍️ Draw & Trace")
+
+    draw_type = st.radio(
+        "Choose what to practice:",
+        ["Alphabet", "Numbers"],
+        horizontal=True
+    )
+
+    if draw_type == "Alphabet":
+        target = st.selectbox("Trace a letter:", list("ABCDEFGHIJKLMNOPQRSTUVWXYZ"))
+        st.write(f"Draw: **{target}**")
+    else:
+        target = st.selectbox("Write a number:", list(range(1, 11)))
+        st.write(f"Draw: **{target}**")
+
+    st.write("Use your finger or mouse to draw 👇")
+
+    from streamlit_drawable_canvas import st_canvas
+
+    canvas = st_canvas(
+        fill_color="rgba(255, 255, 255, 0)",
+        stroke_width=8,
+        stroke_color="#000000",
+        background_color="#FFFFFF",
+        height=350,
+        width=700,
+        drawing_mode="freedraw",
+        key="kg_draw_canvas",
+    )
+
+    if st.button("🧽 Clear"):
+        st.experimental_rerun()
+
+    st.success("Nice try! ⭐ Keep it up!")
+    st.markdown("</div>", unsafe_allow_html=True)
 st.markdown('<div class="kg-section">', unsafe_allow_html=True)
 
 st.subheader("🔢 Numbers 1 to 10")

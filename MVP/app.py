@@ -234,6 +234,42 @@ st.write("")
 st.write("")
 # ✅ CLOSE KG ANIMALS SECTION HERE
 st.markdown("</div>", unsafe_allow_html=True)
+# ================================
+# KG ALPHABET (A–Z)
+# ================================
+if st.session_state["kg_mode"] == "Alphabet":
+    st.markdown('<div class="kg-section">', unsafe_allow_html=True)
+    st.subheader("🔤 Alphabet (A–Z)")
+    st.write("Tap a letter, then tap a picture 👆")
+
+    letters = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+    st.session_state["kg_letter"] = st.selectbox(
+        "Choose a letter",
+        letters,
+        index=letters.index(st.session_state["kg_letter"]),
+        label_visibility="collapsed"
+    )
+
+    letter = st.session_state["kg_letter"]
+    items = ALPHABET_ANIMALS.get(letter, [])
+
+    if not items:
+        st.info(f"Pictures for letter {letter} will be added soon 😊")
+    else:
+        cols = st.columns(2, gap="large")
+        for i, (name, img_path) in enumerate(items):
+            with cols[i % 2]:
+                st.image(img_path, use_container_width=True)
+                if st.button(
+                    name,
+                    key=f"kg_alpha_{letter}_{name}",
+                    use_container_width=True
+                ):
+                    st.success("Good job! ⭐")
+                    st.balloons()
+
+    st.markdown("</div>", unsafe_allow_html=True)
 st.markdown('<div class="kg-section">', unsafe_allow_html=True)
 
 st.subheader("🔢 Numbers 1 to 10")

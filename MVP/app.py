@@ -29,7 +29,7 @@ GRADE_OPTIONS = [
     "Grade 9", "Grade 10", "Grade 11", "Grade 12"
 ]
 ALPHABET_ANIMALS = {
-    "A": [("Alligator", "assets/alphabet_animals/A_alligator.png"),
+    "A": [("Alligator", "assets/alphabet_animals/A_aeroplane.png"),
           ("Ant",       "assets/alphabet_animals/A_ant.png")],
     "B": [("Bear",      "assets/alphabet_animals/B_bear.png"),
           ("Bird",      "assets/alphabet_animals/B_bird.png")],

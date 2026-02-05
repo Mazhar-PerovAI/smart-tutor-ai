@@ -293,8 +293,6 @@ if st.session_state["kg_mode"] == "Draw":
 
     st.write("Use your finger or mouse to draw 👇")
 
-    from streamlit_drawable_canvas import st_canvas
-
     canvas = st_canvas(
         fill_color="rgba(255, 255, 255, 0)",
         stroke_width=8,

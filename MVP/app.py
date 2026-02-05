@@ -3,6 +3,7 @@ from datetime import datetime
 import streamlit as st
 import os
 import random
+from streamlit_drawable_canvas import st_canvas
 from openai import OpenAI
 
 import base64

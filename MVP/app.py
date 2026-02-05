@@ -5,7 +5,7 @@ import os
 import random
 import base64
 import json
-from streamlit_drawable_canvas import st_canvas
+
 from openai import OpenAI
 
 def play_audio_if_exists(path: str):

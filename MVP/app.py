@@ -3,11 +3,11 @@ from datetime import datetime
 import streamlit as st
 import os
 import random
+import base64
+import json
 from streamlit_drawable_canvas import st_canvas
 from openai import OpenAI
 
-import base64
-import json
 def play_audio_if_exists(path: str):
     if os.path.exists(path):
         st.audio(path, format="audio/mp3")

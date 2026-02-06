@@ -188,6 +188,19 @@ with menu_cols[4]:
     if st.button("🎬 Videos", use_container_width=True):
         st.session_state["kg_mode"] = "Videos"
 
+# ✅ NEW
+with menu_cols[5]:
+    if st.button("🟦 Shapes & Colors", use_container_width=True): 
+        st.session_state["kg_mode"] = "Shapes"
+with menu_cols[6]:
+    if st.button("➕ Math Fun", use_container_width=True): 
+        st.session_state["kg_mode"] = "MathFun"
+with menu_cols[7]:
+    if st.button("🧩 Puzzles", use_container_width=True): 
+        st.session_state["kg_mode"] = "Puzzles"
+with menu_cols[8]:
+    if st.button("🏠 My World", use_container_width=True): 
+        st.session_state["kg_mode"] = "MyWorld"
 st.write("")
 st.markdown("</div>", unsafe_allow_html=True)
 st.markdown('<div class="kg-section">', unsafe_allow_html=True)

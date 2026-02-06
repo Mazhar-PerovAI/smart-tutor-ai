@@ -166,7 +166,7 @@ st.markdown('<div class="kg-section">', unsafe_allow_html=True)
 
 st.subheader("🎒 Choose an Activity")
 
-menu_cols = st.columns(5, gap="large")
+menu_cols = st.columns(9, gap="large")
 
 with menu_cols[0]:
     if st.button("🧸 Animals", use_container_width=True):

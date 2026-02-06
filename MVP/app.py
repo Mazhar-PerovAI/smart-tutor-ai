@@ -285,6 +285,90 @@ if st.session_state["kg_mode"] == "Alphabet":
 
     st.markdown("</div>", unsafe_allow_html=True)
     # ================================
+# KG SHAPES & COLORS
+# ================================
+if st.session_state["kg_mode"] == "Shapes":
+    st.markdown('<div class="kg-section">', unsafe_allow_html=True)
+    st.subheader("🟦 Shapes & 🎨 Colors")
+    st.write("Tap a shape or color 👆")
+
+    items = ["🔴 Red", "🔵 Blue", "🟡 Yellow", "⚪ Circle", "⬛ Square", "🔺 Triangle"]
+
+    cols = st.columns(3, gap="large")
+    for i, item in enumerate(items):
+        with cols[i % 3]:
+            if st.button(item, key=f"kg_shape_{i}", use_container_width=True):
+                st.success("Excellent! ⭐")
+                st.balloons()
+
+    st.markdown("</div>", unsafe_allow_html=True)
+    # ================================
+# KG MATH FUN
+# ================================
+if st.session_state["kg_mode"] == "MathFun":
+    st.markdown('<div class="kg-section">', unsafe_allow_html=True)
+    st.subheader("➕ Math Fun")
+    st.write("Count and choose the correct number 👆")
+
+    import random
+    count = random.randint(1, 5)
+    st.write("⭐ " * count)
+
+    cols = st.columns(5, gap="large")
+    for n in range(1, 6):
+        with cols[n - 1]:
+            if st.button(str(n), key=f"kg_math_{n}", use_container_width=True):
+                if n == count:
+                    st.success("Correct! 🎉")
+                    st.balloons()
+                else:
+                    st.info("Nice try 😊 Try again!")
+
+    st.markdown("</div>", unsafe_allow_html=True)
+    # ================================
+# KG PUZZLES (MATCH PAIRS)
+# ================================
+if st.session_state["kg_mode"] == "Puzzles":
+    st.markdown('<div class="kg-section">', unsafe_allow_html=True)
+    st.subheader("🧩 Puzzles & Games")
+    st.write("Match the animal with its first letter 👆")
+
+    pairs = [
+        ("🐶 Dog", "D"),
+        ("🐱 Cat", "C"),
+        ("🦁 Lion", "L"),
+    ]
+
+    cols = st.columns(2, gap="large")
+    for i, (animal, letter) in enumerate(pairs):
+        with cols[i % 2]:
+            if st.button(f"{animal} → {letter}", key=f"kg_puzzle_{i}", use_container_width=True):
+                st.success("Well done! 🎉")
+                st.balloons()
+
+    st.markdown("</div>", unsafe_allow_html=True)
+    # ================================
+# KG MY WORLD
+# ================================
+if st.session_state["kg_mode"] == "MyWorld":
+    st.markdown('<div class="kg-section">', unsafe_allow_html=True)
+    st.subheader("🌍 My World")
+
+    topic = st.selectbox(
+        "Choose a topic 👇",
+        ["My Family", "My School", "Nature (Sun & Stars)"]
+    )
+
+    if topic == "My Family":
+        st.write("👨 Father   👩 Mother   👦 Brother   👧 Sister")
+    elif topic == "My School":
+        st.write("🏫 School   👩‍🏫 Teacher   📚 Books   🧒 Friends")
+    else:
+        st.write("☀️ Sun   ⭐ Stars   🌙 Moon   ☁️ Clouds")
+
+    st.success("Nice learning! 😊")
+    st.markdown("</div>", unsafe_allow_html=True)
+    # ================================
 # KG DRAWING BOARD
 # ================================
 if st.session_state["kg_mode"] == "Draw":

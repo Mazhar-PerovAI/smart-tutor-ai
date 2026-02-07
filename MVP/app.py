@@ -13,6 +13,9 @@ def play_audio_if_exists(path: str):
         st.audio(path, format="audio/mp3")
         return True
     return False
+# ✅ ADD THIS HERE (RIGHT BELOW THE ABOVE FUNCTION)
+def play_click():
+    st.audio("assets/sounds/click.mp3", format="audio/mp3")
 st.set_page_config(
     page_title="SLP | Smart Learning Platform",
     layout="wide"

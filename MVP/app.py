@@ -17,17 +17,27 @@ st.set_page_config(
     page_title="SLP | Smart Learning Platform",
     layout="wide"
 )
-# ---------- KG BUTTON STYLING ----------
+# ---------- KG BUTTON STYLING (COLORED) ----------
 st.markdown("""
 <style>
+/* Base button style */
 button[kind="secondary"] {
     height: 95px;
     font-size: 18px;
     border-radius: 18px;
-    background-color: #f5f7fb;
-    color: #000000;
     font-weight: 600;
 }
+
+/* Individual activity colors */
+.kg-animals button { background-color: #ffe4e1; }   /* soft pink */
+.kg-numbers button { background-color: #e6f0ff; }   /* soft blue */
+.kg-alphabet button { background-color: #fff6d6; }  /* soft yellow */
+.kg-draw button { background-color: #e8f8f5; }      /* mint */
+.kg-videos button { background-color: #f0e6ff; }    /* lavender */
+.kg-shapes button { background-color: #e6ffe6; }    /* light green */
+.kg-math button { background-color: #fff0e6; }      /* peach */
+.kg-puzzles button { background-color: #f5f5f5; }   /* grey */
+.kg-world button { background-color: #e6f7ff; }     /* sky blue */
 </style>
 """, unsafe_allow_html=True)
 st.markdown("### SLP — Smart Learning Platform")

@@ -164,43 +164,51 @@ if grade == 0:
 # ================================
 st.markdown('<div class="kg-section">', unsafe_allow_html=True)
 
-st.subheader("🎒 Choose an Activity")
+st.subheader("🧸 Choose an Activity")
 
-menu_cols = st.columns(9, gap="large")
+# ---------- ROW 1 (5 buttons) ----------
+row1 = st.columns(5, gap="large")
 
-with menu_cols[0]:
-    if st.button("🧸 Animals", use_container_width=True):
+with row1[0]:
+    if st.button("🧸\nAnimals", use_container_width=True):
         st.session_state["kg_mode"] = "Animals"
 
-with menu_cols[1]:
-    if st.button("🔢 Numbers", use_container_width=True):
+with row1[1]:
+    if st.button("🔢\nNumbers", use_container_width=True):
         st.session_state["kg_mode"] = "Numbers"
 
-with menu_cols[2]:
-    if st.button("🔤 Alphabet", use_container_width=True):
+with row1[2]:
+    if st.button("🔤\nAlphabet", use_container_width=True):
         st.session_state["kg_mode"] = "Alphabet"
 
-with menu_cols[3]:
-    if st.button("✍️ Draw", use_container_width=True):
+with row1[3]:
+    if st.button("✍️\nDraw", use_container_width=True):
         st.session_state["kg_mode"] = "Draw"
 
-with menu_cols[4]:
-    if st.button("🎬 Videos", use_container_width=True):
+with row1[4]:
+    if st.button("🎬\nVideos", use_container_width=True):
         st.session_state["kg_mode"] = "Videos"
 
-# ✅ NEW
-with menu_cols[5]:
-    if st.button("🟦 Shapes & Colors", use_container_width=True): 
+
+# ---------- ROW 2 (4 buttons) ----------
+row2 = st.columns(4, gap="large")
+
+with row2[0]:
+    if st.button("🟦\nShapes & Colors", use_container_width=True):
         st.session_state["kg_mode"] = "Shapes"
-with menu_cols[6]:
-    if st.button("➕ Math Fun", use_container_width=True): 
+
+with row2[1]:
+    if st.button("➕\nMath Fun", use_container_width=True):
         st.session_state["kg_mode"] = "MathFun"
-with menu_cols[7]:
-    if st.button("🧩 Puzzles", use_container_width=True): 
+
+with row2[2]:
+    if st.button("🧩\nPuzzles", use_container_width=True):
         st.session_state["kg_mode"] = "Puzzles"
-with menu_cols[8]:
-    if st.button("🏠 My World", use_container_width=True): 
+
+with row2[3]:
+    if st.button("🏠\nMy World", use_container_width=True):
         st.session_state["kg_mode"] = "MyWorld"
+
 st.write("")
 st.markdown("</div>", unsafe_allow_html=True)
 st.markdown('<div class="kg-section">', unsafe_allow_html=True)

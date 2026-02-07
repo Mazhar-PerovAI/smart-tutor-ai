@@ -95,7 +95,7 @@ if "grade" not in st.session_state:
 if "grade_color" not in st.session_state:
     st.session_state["grade_color"] = None
 if "kg_mode" not in st.session_state:
-    st.session_state["kg_mode"] = "Animals"
+    st.session_state["kg_mode"] = "Menu"
 
 if "kg_letter" not in st.session_state:
     st.session_state["kg_letter"] = "A"

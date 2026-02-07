@@ -244,7 +244,11 @@ with row2[0]:
         play_click()
         st.session_state["kg_mode"] = "Shapes"
     st.markdown('</div>', unsafe_allow_html=True)
-
+# -------------------------------
+# NEUTRAL MENU STATE
+# -------------------------------
+if st.session_state["kg_mode"] == "Menu":
+    st.info("👆 Please choose an activity to start")
 with row2[1]:
     st.markdown('<div class="kg-math">', unsafe_allow_html=True)
     if st.button("➕\nMath Fun", use_container_width=True):

@@ -189,51 +189,81 @@ st.markdown('<div class="kg-section">', unsafe_allow_html=True)
 
 st.subheader("🧸 Choose an Activity")
 
-# ---------- ROW 1 (5 buttons) ----------
+# =======================
+# ROW 1 (5 buttons)
+# =======================
 row1 = st.columns(5, gap="large")
 
 with row1[0]:
+    st.markdown('<div class="kg-animals">', unsafe_allow_html=True)
     if st.button("🧸\nAnimals", use_container_width=True):
+        play_click()
         st.session_state["kg_mode"] = "Animals"
+    st.markdown('</div>', unsafe_allow_html=True)
 
 with row1[1]:
+    st.markdown('<div class="kg-numbers">', unsafe_allow_html=True)
     if st.button("🔢\nNumbers", use_container_width=True):
+        play_click()
         st.session_state["kg_mode"] = "Numbers"
+    st.markdown('</div>', unsafe_allow_html=True)
 
 with row1[2]:
+    st.markdown('<div class="kg-alphabet">', unsafe_allow_html=True)
     if st.button("🔤\nAlphabet", use_container_width=True):
+        play_click()
         st.session_state["kg_mode"] = "Alphabet"
+    st.markdown('</div>', unsafe_allow_html=True)
 
 with row1[3]:
+    st.markdown('<div class="kg-draw">', unsafe_allow_html=True)
     if st.button("✍️\nDraw", use_container_width=True):
+        play_click()
         st.session_state["kg_mode"] = "Draw"
+    st.markdown('</div>', unsafe_allow_html=True)
 
 with row1[4]:
+    st.markdown('<div class="kg-videos">', unsafe_allow_html=True)
     if st.button("🎬\nVideos", use_container_width=True):
+        play_click()
         st.session_state["kg_mode"] = "Videos"
+    st.markdown('</div>', unsafe_allow_html=True)
 
 
-# ---------- ROW 2 (4 buttons) ----------
+# =======================
+# ROW 2 (4 buttons)
+# =======================
 row2 = st.columns(4, gap="large")
 
 with row2[0]:
+    st.markdown('<div class="kg-shapes">', unsafe_allow_html=True)
     if st.button("🟦\nShapes & Colors", use_container_width=True):
+        play_click()
         st.session_state["kg_mode"] = "Shapes"
+    st.markdown('</div>', unsafe_allow_html=True)
 
 with row2[1]:
+    st.markdown('<div class="kg-math">', unsafe_allow_html=True)
     if st.button("➕\nMath Fun", use_container_width=True):
+        play_click()
         st.session_state["kg_mode"] = "MathFun"
+    st.markdown('</div>', unsafe_allow_html=True)
 
 with row2[2]:
+    st.markdown('<div class="kg-puzzles">', unsafe_allow_html=True)
     if st.button("🧩\nPuzzles", use_container_width=True):
+        play_click()
         st.session_state["kg_mode"] = "Puzzles"
+    st.markdown('</div>', unsafe_allow_html=True)
 
 with row2[3]:
+    st.markdown('<div class="kg-world">', unsafe_allow_html=True)
     if st.button("🏠\nMy World", use_container_width=True):
+        play_click()
         st.session_state["kg_mode"] = "MyWorld"
+    st.markdown('</div>', unsafe_allow_html=True)
 
 st.write("")
-st.markdown("</div>", unsafe_allow_html=True)
 st.markdown('<div class="kg-section">', unsafe_allow_html=True)
 st.subheader("🧸 Let’s Play with Animals!")
 st.write("Tap an animal 👆")

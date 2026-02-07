@@ -17,6 +17,19 @@ st.set_page_config(
     page_title="SLP | Smart Learning Platform",
     layout="wide"
 )
+# ---------- KG BUTTON STYLING ----------
+st.markdown("""
+<style>
+button[kind="secondary"] {
+    height: 95px;
+    font-size: 18px;
+    border-radius: 18px;
+    background-color: #f5f7fb;
+    color: #000000;
+    font-weight: 600;
+}
+</style>
+""", unsafe_allow_html=True)
 st.markdown("### SLP — Smart Learning Platform")
 st.caption("Step‑by‑step learning for every grade")
 st.divider()
